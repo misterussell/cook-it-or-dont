@@ -9,9 +9,9 @@ const App = () => (
   <BrowserRouter>
     <main className="container">
       <div>
-        <h1>hello world!</h1>
+        <h1>cook it, or don't.</h1>
         <img className="container__image" alt="react logo" src={reactLogo} />
-        <p>If you see this everything is working!</p>
+        <p>Throw some cheese on it.</p>
       </div>
       <ul className="left">
         <li>
@@ -19,6 +19,12 @@ const App = () => (
         </li>
         <li>
           <Link to="/about">About</Link>
+        </li>
+        <li>
+          <Link to="/addrecipe">New Recipe</Link>
+        </li>
+        <li>
+          <Link to="/recipes">All Recipes</Link>
         </li>
       </ul>
       <Routes />

@@ -11,17 +11,35 @@ import ReactDOM from 'react-dom';
 // hot reload for development
 import { AppContainer } from 'react-hot-loader';
 
+import AWSAppSyncClient from 'aws-appsync';
+import { Rehydrated } from 'aws-appsync-react';
+import { ApolloProvider } from 'react-apollo';
+
+import appSyncConfig from './appSync';
+
 import App from './App';
 
 import './style.scss';
 
 const root = document.getElementById('root');
+const client = new AWSAppSyncClient({
+  url: appSyncConfig.graphqlEndpoint,
+  region: appSyncConfig.region,
+  auth: {
+    type: appSyncConfig.authenticationType,
+    apiKey: appSyncConfig.apiKey,
+  }
+});
 
 const render = (Component) => {
   ReactDOM.render(
-    <AppContainer>
-      <Component />
-    </AppContainer>,
+    <ApolloProvider client={client}>
+      <Rehydrated>
+      <AppContainer>
+        <Component />
+      </AppContainer>
+      </Rehydrated>
+    </ApolloProvider>,
     root,
   );
 };
