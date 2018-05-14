@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
+import uuidV4 from 'uuid/v4';
 import CreateRecipe from '../mutations/CreateRecipe';
 import ListRecipes from '../queries/ListRecipes';
 
-class AddRecipe extends React.Component {
+class AddRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -68,6 +69,7 @@ class AddRecipe extends React.Component {
   addRecipe() {
     const { ingredients, title, type } = this.state;
     this.props.onAdd({
+      id: uuidV4(),
       ingredients,
       title,
       type,
@@ -93,7 +95,7 @@ export default graphql(CreateRecipe, {
         const data = proxy.readQuery({ query: ListRecipes });
         data.listRecipes.items.push(createRecipe);
         proxy.writeQuery({ query: ListRecipes, data });
-      }
+      },
     })
   })
 })(AddRecipe)
