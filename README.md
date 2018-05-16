@@ -27,6 +27,10 @@ I'd like to attempt to do my part to solve this a bit. I'd like to learn a bit w
 - React
 - AWS AppSync
 
+## Installation
+- npm install simple-react-app
+- npm install aws-appsync aws-appsync-react react-apollo graphql-tag
+
 ## Best Practice Analysis
 ### - [https://www.bonappetit.com/](https://www.bonappetit.com/)
 Probably my favorite food website. Great content an top of a well thought out UI. This is a good example of a header/content/footer site that priorizes the breadth of their content
