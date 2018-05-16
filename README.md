@@ -28,8 +28,9 @@ I'd like to attempt to do my part to solve this a bit. I'd like to learn a bit w
 - AWS AppSync
 
 ## Installation
-- npm install simple-react-app
-- npm install aws-appsync aws-appsync-react react-apollo graphql-tag
+- Framework generation: npm install simple-react-app
+- GraphQL tools/AWS Appsync: npm install aws-appsync aws-appsync-react react-apollo graphql-tag
+- Cognito Login Tools: npm install --save-dev webpack json-loader + npm install --save amazon-cognito-identity-js
 
 ## Best Practice Analysis
 ### - [https://www.bonappetit.com/](https://www.bonappetit.com/)

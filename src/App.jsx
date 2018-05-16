@@ -21,6 +21,15 @@ const App = () => (
           <Link to="/about">About</Link>
         </li>
         <li>
+          <Link to="/signup">Sign Up</Link>
+        </li>
+        <li>
+          <Link to="/signin">Sign In</Link>
+        </li>
+        <li>
+          <Link to="/confirm">Confirm</Link>
+        </li>
+        <li>
           <Link to="/addrecipe">New Recipe</Link>
         </li>
         <li>

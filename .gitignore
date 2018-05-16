@@ -12,3 +12,7 @@ node_modules
 
 # Prod Bundle
 build
+
+# Privates
+/src/AppSync.js
+/src/CognitoConfig.js
