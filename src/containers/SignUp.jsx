@@ -52,8 +52,8 @@ class SignUp extends Component {
   handleSubmit(e) {
     e.preventDefault();
     console.log('submit');
-    const email = this.state.email.trim();
-    const password = this.state.password.trim();
+    const email = 'max@misterussell.com';
+    const password = 'Newuser1!';
     const attributeList = [
       new CognitoUserAttribute({
         Name: 'email',
