@@ -41,7 +41,8 @@ class SignUp extends Component {
     e.preventDefault();
     const email = this.state.email.trim();
     const password = this.state.password.trim();
-    this.props.store.user.signUp(email, password);
+    this.props.store.user.signUp(email, password).then(result => console.log(result))
+                                                 .catch(err => console.log(err));
   }
 }
 

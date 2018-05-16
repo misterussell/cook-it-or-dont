@@ -32,6 +32,7 @@ I'd like to attempt to do my part to solve this a bit. I'd like to learn a bit w
 - Framework generation: npm install simple-react-app
 - GraphQL tools/AWS Appsync: npm install aws-appsync aws-appsync-react react-apollo graphql-tag
 - Cognito Login Tools: npm install --save-dev webpack json-loader + npm install --save amazon-cognito-identity-js
+- Babel Polyfill: npm install --save-dev babel-polyfill ([see notes here](https://github.com/babel/babel-preset-env/issues/112))
 
 ## Best Practice Analysis
 ### - [https://www.bonappetit.com/](https://www.bonappetit.com/)
