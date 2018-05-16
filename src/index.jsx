@@ -11,11 +11,12 @@ import ReactDOM from 'react-dom';
 // hot reload for development
 import { AppContainer } from 'react-hot-loader';
 
+// appsync dependencies
 import AWSAppSyncClient from 'aws-appsync';
 import { Rehydrated } from 'aws-appsync-react';
 import { ApolloProvider } from 'react-apollo';
 
-import appSyncConfig from './appSync';
+import appSyncConfig from './AppSync';
 
 import App from './App';
 
@@ -27,7 +28,7 @@ const client = new AWSAppSyncClient({
   region: appSyncConfig.region,
   auth: {
     type: appSyncConfig.authenticationType,
-    apiKey: appSyncConfig.apiKey,
+    jwtToken: 'jwtToken',
   }
 });
 

@@ -70,6 +70,7 @@ class SignIn extends Component {
       onSuccess: function(result) {
         console.log(result);
         console.log(result.accessToken);
+        console.log(result.getAccessToken().getJwtToken());
         console.log(result.idToken);
         console.log(result.refreshToken);
       },

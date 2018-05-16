@@ -23,9 +23,10 @@ I'd like to attempt to do my part to solve this a bit. I'd like to learn a bit w
 - A tool that can be used while cooking, i.e. a decent plaintext view.
 - Computative measurements (don't require the user to translate everything)
 
-## Stack
+## Stack/References
 - React
 - AWS AppSync
+- [Real World FP](https://github.com/haskellcamargo/js-real-world-functional-programming)
 
 ## Installation
 - Framework generation: npm install simple-react-app

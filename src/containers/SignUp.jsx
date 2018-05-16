@@ -1,16 +1,4 @@
 import React, { Component } from 'react';
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser } from 'amazon-cognito-identity-js';
-
-import cognito from '../CognitoConfig';
-const poolData = {
-  UserPoolId: cognito.UserPoolId,
-  ClientId: cognito.ClientId,
-};
-
-const userPool = new CognitoUserPool(poolData);
 
 class SignUp extends Component {
   constructor(props) {
@@ -51,23 +39,9 @@ class SignUp extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    console.log('submit');
-    const email = 'max@misterussell.com';
-    const password = 'Newuser1!';
-    const attributeList = [
-      new CognitoUserAttribute({
-        Name: 'email',
-        Value: email,
-      })
-    ];
-    userPool.signUp(email, password, attributeList, null, (err, result) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      console.log('username is ' + result.user.getUsername());
-      console.log('call result: ' + result);
-    });
+    const email = this.state.email.trim();
+    const password = this.state.password.trim();
+    this.props.store.user.signUp(email, password);
   }
 }
 
