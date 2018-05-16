@@ -65,13 +65,17 @@ class SignIn extends Component {
     console.log('submit');
     const email = this.state.email.trim();
     const password = this.state.password.trim();
+    console.log(authenticationDetails);
     cognitoUser.authenticateUser(authenticationDetails, {
       onSuccess: function(result) {
-        console.log('access token + ' + result.getAccessToken.getJwtToken());
-        // console.log('idToken + ' + result.idToken.jwtToken);
+        console.log(result);
+        console.log(result.accessToken);
+        console.log(result.idToken);
+        console.log(result.refreshToken);
       },
       onFailure: function(err) {
         console.log(err);
+        console.log(error);
       },
     });
   }
