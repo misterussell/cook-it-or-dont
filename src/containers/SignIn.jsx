@@ -76,7 +76,6 @@ class SignIn extends Component {
       },
       onFailure: function(err) {
         console.log(err);
-        console.log(error);
       },
     });
   }

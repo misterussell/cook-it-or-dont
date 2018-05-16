@@ -1,4 +1,7 @@
-import { CognitoUserAttribute } from 'amazon-cognito-identity-js';
+import {
+  CognitoUser,
+  CognitoUserAttribute
+} from 'amazon-cognito-identity-js';
 import Store from '../Store';
 
 export default class User {
@@ -9,13 +12,29 @@ export default class User {
         Value: email,
       })
     ];
-    let user = new Promise((resolve, reject) => {
+    const user = new Promise((resolve, reject) => {
       Store.userPool.signUp(email, password, attributeList, null, (err, result) => {
         if (err) {
-          reject(err)
+          reject(err);
         } else resolve(result.user);
       });
     });
     return user;
+  }
+
+  confirmAccount(email, code) {
+    const userData = {
+      Username: email,
+      Pool: Store.userPool,
+    };
+    const cognitoUser = new CognitoUser(userData);
+    const confirmation = new Promise((resolve, reject) => {
+      cognitoUser.confirmRegistration(code, true, (err, result) => {
+        if (err) {
+          reject(err.message || JSON.stringify(err));
+        } else resolve(result);
+      });
+    });
+    return confirmation;
   }
 };
