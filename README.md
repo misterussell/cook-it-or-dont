@@ -25,7 +25,8 @@ I'd like to attempt to do my part to solve this a bit. I'd like to learn a bit w
 
 ## Stack/References
 - React
-- AWS AppSync
+- AWS AppSync for GraphQL integration
+- AWS Cognito for User authentication/data stamping
 - [Real World FP](https://github.com/haskellcamargo/js-real-world-functional-programming)
 
 ## Installation

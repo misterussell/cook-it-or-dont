@@ -1,27 +1,4 @@
 import React, { Component } from 'react';
-import {
-  AuthenticationDetails,
-  CognitoUserPool,
-  CognitoUserAttribute,
-  CognitoUser } from 'amazon-cognito-identity-js';
-
-import cognito from '../CognitoConfig';
-
-const poolData = {
-  UserPoolId: cognito.UserPoolId,
-  ClientId: cognito.ClientId,
-};
-const userPool = new CognitoUserPool(poolData);
-const authenticationData = {
-  Username: 'max@misterussell.com',
-  Password: 'Newuser1!',
-};
-const authenticationDetails = new AuthenticationDetails(authenticationData);
-const userData = {
-  Username: 'max@misterussell.com',
-  Pool: userPool,
-};
-const cognitoUser = new CognitoUser(userData);
 
 class SignIn extends Component {
   constructor(props) {
@@ -65,19 +42,12 @@ class SignIn extends Component {
     console.log('submit');
     const email = this.state.email.trim();
     const password = this.state.password.trim();
-    console.log(authenticationDetails);
-    cognitoUser.authenticateUser(authenticationDetails, {
-      onSuccess: function(result) {
-        console.log(result);
-        console.log(result.accessToken);
-        console.log(result.getAccessToken().getJwtToken());
-        console.log(result.idToken);
-        console.log(result.refreshToken);
-      },
-      onFailure: function(err) {
-        console.log(err);
-      },
-    });
+    this.props.store.user.signIn(email, password).then(result => {
+                                                   console.log('logged in');
+                                                 })
+                                                 .catch(error => {
+                                                   console.log(error);
+                                                 });
   }
 }
 
