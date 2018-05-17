@@ -6,6 +6,12 @@ import {
 import Store from '../Store';
 
 export default class User {
+
+  accessToken: null;
+  idToken: null;
+  refreshToken: null;
+  isAuthenticated: false;
+
   signUp(email, password) {
     const attributeList = [
       new CognitoUserAttribute({
@@ -69,12 +75,24 @@ export default class User {
         cognitoUser.getSession((error, result) => {
           if (error) reject(error);
           if (result) {
-            resolve(result)
+            resolve(this.setCredentials({
+                accessToken: result.getAccessToken().getJwtToken(),
+                idToken: result.getIdToken().getJwtToken(),
+                refreshToken: result.getRefreshToken().getToken(),
+              }));
           };
         });
       } else {
         reject('no user');
       }
     });
+  }
+
+  setCredentials(tokens){
+    this.accessToken = tokens.accessToken;
+    this.idToken = tokens.idToken;
+    this.refreshToken = tokens.refreshToken;
+    this.isAuthenticated = true;
+    return tokens;
   }
 };

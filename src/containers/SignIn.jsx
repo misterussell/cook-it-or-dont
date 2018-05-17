@@ -12,6 +12,11 @@ class SignIn extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentWillMount() {
+    this.props.store.user.getSession().then(result => console.log(result))
+                                      .catch(error => console.log(error));
+  }
+
   render() {
     return (
       <form>

@@ -22,13 +22,17 @@ import App from './App';
 
 import './style.scss';
 
+import Store from './Store';
+
 const root = document.getElementById('root');
+const authenticate = Store.user.getSession().then(result => console.log(result))
+                               .catch(error => console.log(error));
 const client = new AWSAppSyncClient({
   url: appSyncConfig.graphqlEndpoint,
   region: appSyncConfig.region,
   auth: {
     type: appSyncConfig.authenticationType,
-    jwtToken: 'jwtToken',
+    jwtToken: Store.user.accessToken,
   }
 });
 
@@ -37,7 +41,7 @@ const render = (Component) => {
     <ApolloProvider client={client}>
       <Rehydrated>
       <AppContainer>
-        <Component />
+        <Component store={Store} />
       </AppContainer>
       </Rehydrated>
     </ApolloProvider>,

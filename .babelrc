@@ -8,7 +8,11 @@
       }
     ]
   ],
-  "plugins": ["react-hot-loader/babel", "babel-plugin-transform-object-rest-spread"],
+  "plugins": [
+    "react-hot-loader/babel",
+    "babel-plugin-transform-object-rest-spread",
+    "transform-class-properties"
+  ],
   "env": {
     "test": {
       "presets": [
