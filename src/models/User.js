@@ -59,7 +59,11 @@ export default class User {
         onSuccess: function(result) {
           console.log(result.getAccessToken().getJwtToken());
           console.log(result);
-          resolve(result);
+          resolve(this.setCredentials({
+              accessToken: result.getAccessToken().getJwtToken(),
+              idToken: result.getIdToken().getJwtToken(),
+              refreshToken: result.getRefreshToken().getToken(),
+            }));
         },
         onFailure: function(error) {
           reject(error);
