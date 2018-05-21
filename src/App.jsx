@@ -21,6 +21,16 @@ const App = (props) => {
       </li>
     </div>
   );
+  const authorizedLinks = !props.store.user.isAuthenticated ? null : (
+    <div className="authorized-links">
+      <li>
+        <Link to="/myrecipes">My Recipes</Link>
+      </li>
+      <li>
+        <Link to="/addrecipe">New Recipe</Link>
+      </li>
+    </div>
+  )
   return (
     <BrowserRouter>
       <main className="container">
@@ -39,12 +49,9 @@ const App = (props) => {
           {
             unauthorizedLinks
           }
-          <li>
-            <Link to="/addrecipe">New Recipe</Link>
-          </li>
-          <li>
-            <Link to="/recipes">All Recipes</Link>
-          </li>
+          {
+            authorizedLinks
+          }
         </ul>
         <Routes />
       </main>

@@ -76,7 +76,7 @@ export default class User {
         cognitoUser.getSession((error, result) => {
           if (error) reject(error);
           if (result) {
-            this.setCredentials()
+            this.setAuthenticated()
             resolve(result.getAccessToken().getJwtToken());
           };
         });
@@ -86,7 +86,7 @@ export default class User {
     });
   }
 
-  setCredentials(){
+  setAuthenticated(){
     this.isAuthenticated = true;
     return this.isAuthenticated;
   }

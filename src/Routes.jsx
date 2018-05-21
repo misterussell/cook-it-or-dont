@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { Home, About, SignUp, SignIn, Confirm } from './containers';
-import { Recipes, AddRecipe } from './containers';
+import { AddRecipe, MyRecipes, Recipes } from './containers';
 
 import Store from './Store';
 
@@ -13,6 +13,7 @@ const Routes = () => (
     <Route path="/signin" render={() => <SignIn store={Store}/>} />
     <Route path="/confirm" render={() => <Confirm store={Store}/>} />
     <Route path="/addrecipe" component={AddRecipe} />
+    <Route path="/myrecipes" component={() => <MyRecipes store={Store}/>} />
     <Route path="/recipes" component={Recipes} />
   </Switch>
 );
