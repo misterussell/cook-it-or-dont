@@ -7,9 +7,6 @@ import Store from '../Store';
 
 export default class User {
 
-  accessToken: null;
-  idToken: null;
-  refreshToken: null;
   isAuthenticated: false;
 
   signUp(email, password) {
@@ -59,11 +56,11 @@ export default class User {
         onSuccess: function(result) {
           console.log(result.getAccessToken().getJwtToken());
           console.log(result);
-          resolve(this.setCredentials({
-              accessToken: result.getAccessToken().getJwtToken(),
-              idToken: result.getIdToken().getJwtToken(),
-              refreshToken: result.getRefreshToken().getToken(),
-            }));
+          resolve({
+            accessToken: result.getAccessToken().getJwtToken(),
+            idToken: result.getIdToken().getJwtToken(),
+            refreshToken: result.getRefreshToken().getToken(),
+          });
         },
         onFailure: function(error) {
           reject(error);
@@ -79,11 +76,8 @@ export default class User {
         cognitoUser.getSession((error, result) => {
           if (error) reject(error);
           if (result) {
-            resolve(this.setCredentials({
-                accessToken: result.getAccessToken().getJwtToken(),
-                idToken: result.getIdToken().getJwtToken(),
-                refreshToken: result.getRefreshToken().getToken(),
-              }));
+            this.setCredentials()
+            resolve(result.getAccessToken().getJwtToken());
           };
         });
       } else {
@@ -92,11 +86,13 @@ export default class User {
     });
   }
 
-  setCredentials(tokens){
-    this.accessToken = tokens.accessToken;
-    this.idToken = tokens.idToken;
-    this.refreshToken = tokens.refreshToken;
+  setCredentials(){
     this.isAuthenticated = true;
-    return tokens;
+    return this.isAuthenticated;
+  }
+
+  async getAccessToken() {
+    let token = await this.getSession();
+    return token;
   }
 };

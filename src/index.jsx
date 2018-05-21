@@ -32,7 +32,7 @@ const client = new AWSAppSyncClient({
   region: appSyncConfig.region,
   auth: {
     type: appSyncConfig.authenticationType,
-    jwtToken: Store.user.accessToken,
+    jwtToken: Store.user.getAccessToken(),
   }
 });
 

@@ -48,7 +48,7 @@ class SignIn extends Component {
     const email = this.state.email.trim();
     const password = this.state.password.trim();
     this.props.store.user.signIn(email, password).then(result => {
-                                                   console.log('logged in');
+                                                   console.log('logging in');
                                                  })
                                                  .catch(error => {
                                                    console.log(error);
