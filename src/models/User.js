@@ -54,13 +54,7 @@ export default class User {
     return new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: function(result) {
-          console.log(result.getAccessToken().getJwtToken());
-          console.log(result);
-          resolve({
-            accessToken: result.getAccessToken().getJwtToken(),
-            idToken: result.getIdToken().getJwtToken(),
-            refreshToken: result.getRefreshToken().getToken(),
-          });
+          resolve(result.getAccessToken().getJwtToken());
         },
         onFailure: function(error) {
           reject(error);
@@ -69,19 +63,24 @@ export default class User {
     });
   }
 
+  signOut() {
+    const cognitoUser = Store.userPool.getCurrentUser();
+    const isUser = (user) => user ? cognitoUser.signOut() : null;
+    return isUser(cognitoUser);
+  }
+
   getSession() {
     const cognitoUser = Store.userPool.getCurrentUser();
     return new Promise((resolve, reject) => {
-      if (cognitoUser !== null) {
+      if (cognitoUser) {
         cognitoUser.getSession((error, result) => {
           if (error) reject(error);
           if (result) {
-            this.setAuthenticated()
             resolve(result.getAccessToken().getJwtToken());
           };
         });
       } else {
-        reject('no user');
+        reject('No user found');
       }
     });
   }
