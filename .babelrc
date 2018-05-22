@@ -9,9 +9,12 @@
     ]
   ],
   "plugins": [
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-es2015-classes",
+    "transform-regenerator",
     "react-hot-loader/babel",
     "babel-plugin-transform-object-rest-spread",
-    "transform-class-properties"
   ],
   "env": {
     "test": {

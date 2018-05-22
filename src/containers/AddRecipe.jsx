@@ -20,7 +20,7 @@ class AddRecipe extends Component {
 
    this.onChange = this.onChange.bind(this);
    this.addElement = this.addElement.bind(this);
-   // this.addInstruction = this.addInstruction.bind(this);
+   this.addIngredient = this.addIngredient.bind(this);
   }
 
   render() {
