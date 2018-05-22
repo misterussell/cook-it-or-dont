@@ -8,15 +8,19 @@ class AddRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: '',
-      type: '',
+      element: '',
+      elements: [],
       ingredient: '',
       ingredients: [],
+      instruction: '',
+      instructions: [],
+      title: '',
+      type: '',
    };
 
    this.onChange = this.onChange.bind(this);
-   this.addIngredient = this.addIngredient.bind(this);
-   this.addRecipe = this.addRecipe.bind(this);
+   this.addElement = this.addElement.bind(this);
+   // this.addInstruction = this.addInstruction.bind(this);
   }
 
   render() {
@@ -34,17 +38,32 @@ class AddRecipe extends Component {
         placeholder="recipe type"
       />
       <div>
-        <p>Ingredients</p>
+        <p>Elements</p>
           {
-            this.state.ingredients.map((ingredient, i) => <p key={i}>{ingredient}</p>)
+            this.state.elements.map((element, i) => {
+              return (
+                <div
+                  key={i}
+                  className="element-builder"
+                >
+                  <p>{element}</p>
+                  <input
+                    value={this.state.ingredient}
+                    onChange={e => this.onChange('ingredient', e.target.value)}
+                    placeholder='ingredient'
+                  />
+                  <button onClick={this.addIngredient}>add ingredient</button>
+                </div>
+              )
+            })
           }
       </div>
       <input
-       value={this.state.ingredient}
-       onChange={e => this.onChange('ingredient', e.target.value)}
-       placeholder='ingredient'
+       value={this.state.element}
+       onChange={e => this.onChange('element', e.target.value)}
+       placeholder='element'
       />
-      <button onClick={this.addIngredient}>add ingredient</button>
+      <button onClick={this.addElement}>add element</button>
       <div onClick={this.addRecipe}>
         <p>add recipe</p>
       </div>
@@ -56,21 +75,30 @@ class AddRecipe extends Component {
     this.setState({ [key]: value });
   }
 
+  addElement() {
+    if (this.state.element === '') return
+    const elements = [this.state.element, ...this.state.elements];
+    this.setState({
+      elements,
+      element: '',
+    });
+  }
+
   addIngredient() {
     if (this.state.ingredient === '') return
-    const ingredients = this.state.ingredients;
-    ingredients.push(this.state.ingredient);
+    const ingredients = [this.state.ingredient, ...this.state.ingredients];
     this.setState({
       ingredients,
-      ingredient: '',
-    }) ;
+      ingredient: ''
+    });
   }
 
   addRecipe() {
-    const { ingredients, title, type } = this.state;
+    const { elements, instructions, title, type } = this.state;
     this.props.onAdd({
       id: uuidV4(),
-      ingredients,
+      elements,
+      instructions,
       title,
       type,
     });
