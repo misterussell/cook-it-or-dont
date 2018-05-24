@@ -10,10 +10,10 @@ class AddRecipe extends Component {
     this.state = {
       element: '',
       elements: [],
-      ingredient: '',
+      ingredientCount: '',
+      ingredientItem: '',
+      ingredientMeasurement: '',
       ingredients: [],
-      instruction: '',
-      instructions: [],
       title: '',
       type: '',
    };
@@ -22,7 +22,7 @@ class AddRecipe extends Component {
    this.addElement = this.addElement.bind(this);
    this.addIngredient = this.addIngredient.bind(this);
   }
-
+  // the elements array should contain named objects so that elements.ingredients can be iterated over for rendering.
   render() {
    return (
     <div>
@@ -47,10 +47,23 @@ class AddRecipe extends Component {
                   className="element-builder"
                 >
                   <p>{element}</p>
+                  {
+                    this.state.ingredients
+                  }
                   <input
-                    value={this.state.ingredient}
-                    onChange={e => this.onChange('ingredient', e.target.value)}
+                    value={this.state.ingredientCount}
+                    onChange={e => this.onChange('ingredientCount', e.target.value)}
                     placeholder='ingredient'
+                  />
+                  <input
+                    value={this.state.ingredientMeasurement}
+                    onChange={e => this.onChange('ingredientMeasurement', e.target.value)}
+                    placeholder='measurement'
+                  />
+                  <input
+                    value={this.state.ingredientItem}
+                    onChange={e => this.onChange('ingredientItem', e.target.value)}
+                    placeholder='item'
                   />
                   <button onClick={this.addIngredient}>add ingredient</button>
                 </div>
@@ -85,11 +98,19 @@ class AddRecipe extends Component {
   }
 
   addIngredient() {
-    if (this.state.ingredient === '') return
-    const ingredients = [this.state.ingredient, ...this.state.ingredients];
+    if (this.state.ingredientItem === '') return
+    const { ingredientCount, ingredientItem, ingredientMeasurement} = this.state;
+    const ingredient = {
+      ingredientCount,
+      ingredientItem,
+      ingredientMeasurement,
+    };
+    const ingredients = [ingredient, ...this.state.ingredients];
     this.setState({
       ingredients,
-      ingredient: ''
+      ingredientCount: '',
+      ingredientItem: '',
+      ingredientMeasurement: '',
     });
   }
 
@@ -97,16 +118,12 @@ class AddRecipe extends Component {
     const { elements, instructions, title, type } = this.state;
     this.props.onAdd({
       id: uuidV4(),
-      elements,
-      instructions,
       title,
       type,
     });
     this.setState({
       title: '',
       type: '',
-      ingredient: '',
-      ingredients: [],
     });
   }
 }
@@ -118,12 +135,13 @@ export default graphql(CreateRecipe, {
       optimisticResponse: {
         __typename: 'Mutation',
         createRecipe: { ...recipe,  __typename: 'Recipe' }
-      },
-      update: (proxy, { data: { createRecipe } }) => {
-        const data = proxy.readQuery({ query: ListRecipes });
-        data.listRecipes.items.push(createRecipe);
-        proxy.writeQuery({ query: ListRecipes, data });
-      },
+      }
+      // ,
+      // update: (proxy, { data: { createRecipe } }) => {
+      //   const data = proxy.readQuery({ query: ListRecipes });
+      //   data.listRecipes.items.push(createRecipe);
+      //   proxy.writeQuery({ query: ListRecipes, data });
+      // },
     })
   })
 })(AddRecipe)
