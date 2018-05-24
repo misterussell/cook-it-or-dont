@@ -19,6 +19,7 @@ class AddRecipe extends Component {
    };
 
    this.onChange = this.onChange.bind(this);
+   this.addRecipe = this.addRecipe.bind(this);
    this.addElement = this.addElement.bind(this);
    this.addIngredient = this.addIngredient.bind(this);
   }
@@ -47,9 +48,6 @@ class AddRecipe extends Component {
                   className="element-builder"
                 >
                   <p>{element}</p>
-                  {
-                    this.state.ingredients
-                  }
                   <input
                     value={this.state.ingredientCount}
                     onChange={e => this.onChange('ingredientCount', e.target.value)}
@@ -99,7 +97,7 @@ class AddRecipe extends Component {
 
   addIngredient() {
     if (this.state.ingredientItem === '') return
-    const { ingredientCount, ingredientItem, ingredientMeasurement} = this.state;
+    const { ingredientCount, ingredientItem, ingredientMeasurement } = this.state;
     const ingredient = {
       ingredientCount,
       ingredientItem,
@@ -115,12 +113,14 @@ class AddRecipe extends Component {
   }
 
   addRecipe() {
-    const { elements, instructions, title, type } = this.state;
+    const { title, type } = this.state;
+    // plan to chain together these promises to get all elements and ingredients built
     this.props.onAdd({
       id: uuidV4(),
       title,
       type,
-    });
+    }).then(result => console.log('success ' + result))
+      .catch(error => console.log(error));
     this.setState({
       title: '',
       type: '',
@@ -136,12 +136,6 @@ export default graphql(CreateRecipe, {
         __typename: 'Mutation',
         createRecipe: { ...recipe,  __typename: 'Recipe' }
       }
-      // ,
-      // update: (proxy, { data: { createRecipe } }) => {
-      //   const data = proxy.readQuery({ query: ListRecipes });
-      //   data.listRecipes.items.push(createRecipe);
-      //   proxy.writeQuery({ query: ListRecipes, data });
-      // },
     })
   })
 })(AddRecipe)
