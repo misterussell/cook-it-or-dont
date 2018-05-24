@@ -16,14 +16,6 @@ class Recipes extends Component {
             <div key={i}>
               <p>Recipe name: {r.title}</p>
               <p>Recipe type: {r.type}</p>
-              <div>
-                <p>Ingredients</p>
-                {
-                  r.ingredients.map((ingredient, i2) => (
-                    <p key={i2}>{ingredient}</p>
-                  ))
-                }
-              </div>
             </div>
           ))
         }

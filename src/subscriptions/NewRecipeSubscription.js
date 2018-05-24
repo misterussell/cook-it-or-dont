@@ -4,7 +4,6 @@ export default gql`
   subscription NewRecipeSub {
     onCreateRecipe {
       id
-      ingredients
       title
       type
     }

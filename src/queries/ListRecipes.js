@@ -5,9 +5,18 @@ export default gql`
     listRecipes {
       items {
         id
-        ingredients
         title
         type
+        elements {
+          id
+          name
+          ingredients {
+            id
+            count
+            measurement
+            item
+          }
+        }
       }
     }
   }
