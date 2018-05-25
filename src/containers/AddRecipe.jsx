@@ -3,6 +3,7 @@ import { compose, graphql } from 'react-apollo';
 import uuidV4 from 'uuid/v4';
 import CreateRecipe from '../mutations/CreateRecipe';
 import CreateElement from '../mutations/CreateElement';
+import CreateElements from '../mutations/CreateElements';
 import ListRecipes from '../queries/ListRecipes';
 
 class AddRecipe extends Component {
@@ -130,7 +131,8 @@ class AddRecipe extends Component {
     // }).then(result => console.log('success ' + result))
     //   .catch(error => console.log(error));
 
-    this.addElements();
+    // this.addElements();
+    this.props.onAddElements(elements);
     this.setState({
       title: '',
       type: '',
@@ -163,6 +165,21 @@ export default compose(
         optimisticResponse: {
           __typename: 'Mutation',
           createElement: { ...element, __typename: 'Element'}
+        }
+      })
+    })
+  }),
+  graphql(CreateElements, {
+    props: props => ({
+      onAddElements: elements => props.mutate({
+        variables: {
+          id: elements.id,
+          name: elements.name,
+          recipeID: elements.recipeID,
+        },
+        optimisticResponse: {
+          __typename: 'Mutation',
+          addElements: { ...elements, __typename: 'Element'}
         }
       })
     })
