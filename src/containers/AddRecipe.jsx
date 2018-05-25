@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
+import { compose, graphql } from 'react-apollo';
 import uuidV4 from 'uuid/v4';
 import CreateRecipe from '../mutations/CreateRecipe';
+import CreateElement from '../mutations/CreateElement';
 import ListRecipes from '../queries/ListRecipes';
 
 class AddRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      recipeID: uuidV4(),
       element: '',
       elements: [],
       ingredientCount: '',
@@ -47,7 +49,7 @@ class AddRecipe extends Component {
                   key={i}
                   className="element-builder"
                 >
-                  <p>{element}</p>
+                  <p>{element.name}</p>
                   <input
                     value={this.state.ingredientCount}
                     onChange={e => this.onChange('ingredientCount', e.target.value)}
@@ -88,7 +90,13 @@ class AddRecipe extends Component {
 
   addElement() {
     if (this.state.element === '') return
-    const elements = [this.state.element, ...this.state.elements];
+    const elements = [
+      {
+        name: this.state.element,
+        id: uuidV4(),
+        recipeID: this.state.recipeID,
+      },
+      ...this.state.elements];
     this.setState({
       elements,
       element: '',
@@ -113,29 +121,50 @@ class AddRecipe extends Component {
   }
 
   addRecipe() {
-    const { title, type } = this.state;
+    const { title, type, elements } = this.state;
     // plan to chain together these promises to get all elements and ingredients built
-    this.props.onAdd({
-      id: uuidV4(),
-      title,
-      type,
-    }).then(result => console.log('success ' + result))
-      .catch(error => console.log(error));
+    // this.props.onAddRecipe({
+    //   id: uuidV4(),
+    //   title,
+    //   type,
+    // }).then(result => console.log('success ' + result))
+    //   .catch(error => console.log(error));
+
+    this.addElements();
     this.setState({
       title: '',
       type: '',
     });
   }
+
+  async addElements() {
+    await Promise.all(this.state.elements.map(async element => {
+      const response = await this.props.onAddElement(element);
+    }));
+  }
 }
 
-export default graphql(CreateRecipe, {
-  props: props => ({
-    onAdd: recipe => props.mutate({
-      variables: recipe,
-      optimisticResponse: {
-        __typename: 'Mutation',
-        createRecipe: { ...recipe,  __typename: 'Recipe' }
-      }
+export default compose(
+  graphql(CreateRecipe, {
+    props: props => ({
+      onAddRecipe: recipe => props.mutate({
+        variables: recipe,
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createRecipe: { ...recipe,  __typename: 'Recipe' }
+        }
+      })
     })
-  })
-})(AddRecipe)
+  }),
+  graphql(CreateElement, {
+    props: props => ({
+      onAddElement: element => props.mutate({
+        variables: element,
+        optimisticResponse: {
+          __typename: 'Mutation',
+          createElement: { ...element, __typename: 'Element'}
+        }
+      })
+    })
+  }),
+)(AddRecipe);
