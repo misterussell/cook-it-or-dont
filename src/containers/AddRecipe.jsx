@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import uuidV4 from 'uuid/v4';
-import CreateRecipe from '../mutations/CreateRecipe';
-import CreateElement from '../mutations/CreateElement';
-import CreateElements from '../mutations/CreateElements';
-import ListRecipes from '../queries/ListRecipes';
+import AddRecipeGQL from '../mutations/AddRecipe';
 
 class AddRecipe extends Component {
   constructor(props) {
@@ -12,6 +9,7 @@ class AddRecipe extends Component {
     this.state = {
       recipeID: uuidV4(),
       element: '',
+      elementID: '',
       elements: [],
       ingredientCount: '',
       ingredientItem: '',
@@ -93,26 +91,29 @@ class AddRecipe extends Component {
     if (this.state.element === '') return
     const elements = [
       {
-        name: this.state.element,
         id: uuidV4(),
+        name: this.state.element,
         recipeID: this.state.recipeID,
       },
       ...this.state.elements];
     this.setState({
       elements,
       element: '',
+      elementID: uuidV4(),
     });
   }
 
   addIngredient() {
     if (this.state.ingredientItem === '') return
-    const { ingredientCount, ingredientItem, ingredientMeasurement } = this.state;
-    const ingredient = {
-      ingredientCount,
-      ingredientItem,
-      ingredientMeasurement,
-    };
-    const ingredients = [ingredient, ...this.state.ingredients];
+    const ingredients = [
+      {
+        count: this.state.ingredientCount,
+        elementID: this.state.elementID,
+        id: uuidV4(),
+        item: this.state.ingredientItem,
+        measurement: this.state.ingredientMeasurement,
+      },
+      ...this.state.ingredients];
     this.setState({
       ingredients,
       ingredientCount: '',
@@ -122,64 +123,50 @@ class AddRecipe extends Component {
   }
 
   addRecipe() {
-    const { title, type, elements } = this.state;
-    // plan to chain together these promises to get all elements and ingredients built
-    // this.props.onAddRecipe({
-    //   id: uuidV4(),
-    //   title,
-    //   type,
-    // }).then(result => console.log('success ' + result))
-    //   .catch(error => console.log(error));
+    const recipes = [{
+      title: this.state.title,
+      type: this.state.type,
+      id: this.state.recipeID,
+    }];
+    const { elements, ingredients } = this.state;
 
-    // this.addElements();
-    this.props.onAddElements(elements);
+    const recipeObject = {
+      recipes,
+      elements,
+      ingredients,
+    }
+
+    console.log(recipeObject);
+
+    this.props.addRecipe(recipeObject);
     this.setState({
       title: '',
       type: '',
     });
   }
 
-  async addElements() {
-    await Promise.all(this.state.elements.map(async element => {
-      const response = await this.props.onAddElement(element);
-    }));
-  }
+  // async addElements() {
+  //   await Promise.all(this.state.elements.map(async element => {
+  //     const response = await this.props.onAddElement(element);
+  //   }));
+  // }
 }
 
 export default compose(
-  graphql(CreateRecipe, {
+  graphql(AddRecipeGQL, {
     props: props => ({
-      onAddRecipe: recipe => props.mutate({
-        variables: recipe,
-        optimisticResponse: {
-          __typename: 'Mutation',
-          createRecipe: { ...recipe,  __typename: 'Recipe' }
-        }
-      })
-    })
-  }),
-  graphql(CreateElement, {
-    props: props => ({
-      onAddElement: element => props.mutate({
-        variables: element,
-        optimisticResponse: {
-          __typename: 'Mutation',
-          createElement: { ...element, __typename: 'Element'}
-        }
-      })
-    })
-  }),
-  graphql(CreateElements, {
-    props: props => ({
-      onAddElements: elements => props.mutate({
+      addRecipe: (recipeData) => props.mutate({
         variables: {
-          id: elements.id,
-          name: elements.name,
-          recipeID: elements.recipeID,
+          recipes: recipeData.recipes,
+          elements: recipeData.elements,
+          ingredients: recipeData.ingredients,
         },
         optimisticResponse: {
           __typename: 'Mutation',
-          addElements: { ...elements, __typename: 'Element'}
+          addRecipe: {
+             ...recipeData,
+             __typename: 'Recipe'
+          }
         }
       })
     })

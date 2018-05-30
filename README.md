@@ -23,6 +23,12 @@ I'd like to attempt to do my part to solve this a bit. I'd like to learn a bit w
 - A tool that can be used while cooking, i.e. a decent plaintext view.
 - Computative measurements (don't require the user to translate everything)
 
+## MVP
+- User can upload a recipe
+- Recipe consists of Elements, Ingredients, and Instructions for each element.
+- User can view all recipes
+- Utilize AWS AppSync DynamoDB with GraphQL for data
+
 ## Stack/References
 - React
 - AWS AppSync for GraphQL integration
