@@ -3,11 +3,16 @@ import { compose, graphql } from 'react-apollo';
 import uuidV4 from 'uuid/v4';
 import AddRecipeGQL from '../mutations/AddRecipe';
 
+import { updateObject } from '../models/Recipe';
+
 class AddRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      recipe: {},
       recipeID: uuidV4(),
+      recipeTitle: '',
+      recipeType: '',
       element: '',
       elementID: '',
       elements: [],
@@ -30,12 +35,12 @@ class AddRecipe extends Component {
     <div>
       <h2>Create Recipe</h2>
       <input
-        value={this.state.title}
+        value={this.state.recipeTitle}
         onChange={e => this.onChange('title', e.target.value)}
         placeholder="recipe title"
       />
       <input
-        value={this.state.type}
+        value={this.state.recipeType}
         onChange={e => this.onChange('type', e.target.value)}
         placeholder="recipe type"
       />
@@ -84,7 +89,12 @@ class AddRecipe extends Component {
   }
 
   onChange(key, value) {
-    this.setState({ [key]: value });
+    // this.setState((prevState) => {
+    //   const recipe = updateObject({[key]: value}, prevState.recipe);
+    //   return { recipe };
+    // })
+    this.setState({ recipe: updateObject({[key]: value})});
+    this.setState({[key]: value});
   }
 
   addElement() {

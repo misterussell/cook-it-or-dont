@@ -3,6 +3,7 @@ import {
   CognitoUserAttribute,
   AuthenticationDetails,
 } from 'amazon-cognito-identity-js';
+
 import Store from '../Store';
 
 export default class User {

@@ -15,6 +15,7 @@
     "transform-regenerator",
     "react-hot-loader/babel",
     "babel-plugin-transform-object-rest-spread",
+    "transform-class-properties"
   ],
   "env": {
     "test": {
@@ -27,7 +28,10 @@
           }
         ]
       ],
-      "plugins": ["transform-es2015-modules-commonjs"]
+      "plugins": [
+        "transform-es2015-modules-commonjs",
+        "transform-class-properties"
+      ]
     }
   }
 }
