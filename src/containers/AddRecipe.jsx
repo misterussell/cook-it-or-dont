@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { compose, graphql } from 'react-apollo';
 import uuidV4 from 'uuid/v4';
+import { observer } from 'mobx-react'
 import AddRecipeGQL from '../mutations/AddRecipe';
-
-import { updateObject } from '../models/Recipe';
+import { Element } from './';
 
 class AddRecipe extends Component {
   constructor(props) {
@@ -13,21 +13,22 @@ class AddRecipe extends Component {
       recipeID: uuidV4(),
       recipeTitle: '',
       recipeType: '',
-      element: '',
-      elementID: '',
-      elements: [],
+      elements: [{}],
       ingredientCount: '',
       ingredientItem: '',
       ingredientMeasurement: '',
       ingredients: [],
-      title: '',
-      type: '',
    };
 
    this.onChange = this.onChange.bind(this);
    this.addRecipe = this.addRecipe.bind(this);
    this.addElement = this.addElement.bind(this);
+   this.updateElement = this.updateElement.bind(this);
    this.addIngredient = this.addIngredient.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.store.recipe.newRecipe();
   }
   // the elements array should contain named objects so that elements.ingredients can be iterated over for rendering.
   render() {
@@ -36,12 +37,12 @@ class AddRecipe extends Component {
       <h2>Create Recipe</h2>
       <input
         value={this.state.recipeTitle}
-        onChange={e => this.onChange('title', e.target.value)}
+        onChange={e => this.onChange('recipeTitle', e.target.value)}
         placeholder="recipe title"
       />
       <input
         value={this.state.recipeType}
-        onChange={e => this.onChange('type', e.target.value)}
+        onChange={e => this.onChange('recipeType', e.target.value)}
         placeholder="recipe type"
       />
       <div>
@@ -49,37 +50,15 @@ class AddRecipe extends Component {
           {
             this.state.elements.map((element, i) => {
               return (
-                <div
+                <Element
                   key={i}
-                  className="element-builder"
-                >
-                  <p>{element.name}</p>
-                  <input
-                    value={this.state.ingredientCount}
-                    onChange={e => this.onChange('ingredientCount', e.target.value)}
-                    placeholder='ingredient'
-                  />
-                  <input
-                    value={this.state.ingredientMeasurement}
-                    onChange={e => this.onChange('ingredientMeasurement', e.target.value)}
-                    placeholder='measurement'
-                  />
-                  <input
-                    value={this.state.ingredientItem}
-                    onChange={e => this.onChange('ingredientItem', e.target.value)}
-                    placeholder='item'
-                  />
-                  <button onClick={this.addIngredient}>add ingredient</button>
-                </div>
+                  index={i}
+                  updateElement={this.updateElement}
+                />
               )
             })
           }
       </div>
-      <input
-       value={this.state.element}
-       onChange={e => this.onChange('element', e.target.value)}
-       placeholder='element'
-      />
       <button onClick={this.addElement}>add element</button>
       <div onClick={this.addRecipe}>
         <p>add recipe</p>
@@ -89,27 +68,21 @@ class AddRecipe extends Component {
   }
 
   onChange(key, value) {
-    // this.setState((prevState) => {
-    //   const recipe = updateObject({[key]: value}, prevState.recipe);
-    //   return { recipe };
-    // })
-    this.setState({ recipe: updateObject({[key]: value})});
     this.setState({[key]: value});
   }
 
   addElement() {
-    if (this.state.element === '') return
-    const elements = [
-      {
-        id: uuidV4(),
-        name: this.state.element,
-        recipeID: this.state.recipeID,
-      },
-      ...this.state.elements];
+    const elements = [...this.state.elements, {}];
+    this.setState({elements});
+  }
+
+  updateElement(index, key, value) {
+    const elements = this.state.elements;
+    const element = this.state.elements[index];
+    element[key] = value;
     this.setState({
-      elements,
-      element: '',
-      elementID: uuidV4(),
+      element,
+      ...elements
     });
   }
 
@@ -134,8 +107,8 @@ class AddRecipe extends Component {
 
   addRecipe() {
     const recipes = [{
-      title: this.state.title,
-      type: this.state.type,
+      title: this.state.recipeTitle,
+      type: this.state.recipeType,
       id: this.state.recipeID,
     }];
     const { elements, ingredients } = this.state;
@@ -154,12 +127,6 @@ class AddRecipe extends Component {
       type: '',
     });
   }
-
-  // async addElements() {
-  //   await Promise.all(this.state.elements.map(async element => {
-  //     const response = await this.props.onAddElement(element);
-  //   }));
-  // }
 }
 
 export default compose(

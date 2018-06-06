@@ -1,4 +1,5 @@
-//
+import { action, computed, observable } from 'mobx';
+import uuidV4 from 'uuid/v4';
 // take the complication off state.
 // when something is updated that specific part of a recipe object needs to be updated
 // when a field is updated a function for that part of the object is invoked.
@@ -8,14 +9,34 @@
 // const initiateSeed = pipe(generateGenState, generateNextGenState, setNextGenState);
 // iniateSeed(2)
 
-export function updateObject(keyVal, object = {}) {
-  if (typeof keyVal !== 'object') {
-    throw new Error('Key: Value pair must be defined.');
+class Recipe {
+  @observable recipe = {
+    id: uuidV4(),
+    title: '',
+    type: '',
+  };
+
+  @observable elements = {};
+
+  @action newRecipe() {
+    this.recipe = {
+      id: uuidV4(),
+      title: '',
+      type: '',
+    }
+
+    this.elements = {};
   }
-  return Object.freeze({
-    ...keyVal,
-    ...object
-  });
+
+  updateObject(keyVal, object = {}) {
+    if (typeof keyVal !== 'object') {
+      throw new Error('Key: Value pair must be defined.');
+    }
+    return Object.freeze({
+      ...keyVal,
+      ...object
+    });
+  }
 }
 
-export default { updateObject };
+export default Recipe;

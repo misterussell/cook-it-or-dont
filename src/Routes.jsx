@@ -12,7 +12,7 @@ const Routes = () => (
     <Route path="/signup" render={() => <SignUp store={Store}/>} />
     <Route path="/signin" render={() => <SignIn store={Store}/>} />
     <Route path="/confirm" render={() => <Confirm store={Store}/>} />
-    <Route path="/addrecipe" component={AddRecipe} />
+    <Route path="/addrecipe" render={() => <AddRecipe store={Store}/>} />
     <Route path="/myrecipes" component={() => <MyRecipes store={Store}/>} />
     <Route path="/recipes" component={Recipes} />
   </Switch>
