@@ -9,15 +9,11 @@ class AddRecipe extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recipe: {},
-      recipeID: uuidV4(),
+      id: uuidV4(),
       recipeTitle: '',
       recipeType: '',
       elements: [{}],
-      ingredientCount: '',
-      ingredientItem: '',
-      ingredientMeasurement: '',
-      ingredients: [],
+      ingredients: [{}],
    };
 
    this.onChange = this.onChange.bind(this);
@@ -25,12 +21,13 @@ class AddRecipe extends Component {
    this.addElement = this.addElement.bind(this);
    this.updateElement = this.updateElement.bind(this);
    this.addIngredient = this.addIngredient.bind(this);
+   this.updateIngredient = this.updateIngredient.bind(this);
   }
 
   componentWillMount() {
     this.props.store.recipe.newRecipe();
   }
-  // the elements array should contain named objects so that elements.ingredients can be iterated over for rendering.
+
   render() {
    return (
     <div>
@@ -54,6 +51,9 @@ class AddRecipe extends Component {
                   key={i}
                   index={i}
                   updateElement={this.updateElement}
+                  addIngredient={this.addIngredient}
+                  updateIngredient={this.updateIngredient}
+                  recipeID={this.state.id}
                 />
               )
             })
@@ -73,12 +73,12 @@ class AddRecipe extends Component {
 
   addElement() {
     const elements = [...this.state.elements, {}];
-    this.setState({elements});
+    this.setState({ elements });
   }
 
   updateElement(index, key, value) {
     const elements = this.state.elements;
-    const element = this.state.elements[index];
+    const element = elements[index];
     element[key] = value;
     this.setState({
       element,
@@ -87,21 +87,18 @@ class AddRecipe extends Component {
   }
 
   addIngredient() {
-    if (this.state.ingredientItem === '') return
-    const ingredients = [
-      {
-        count: this.state.ingredientCount,
-        elementID: this.state.elementID,
-        id: uuidV4(),
-        item: this.state.ingredientItem,
-        measurement: this.state.ingredientMeasurement,
-      },
-      ...this.state.ingredients];
+    const ingredients = [...this.state.ingredients, {}];
+    this.setState({ ingredients })
+  }
+
+  updateIngredient(index, key, value) {
+    console.log('BING');
+    const ingredients = this.state.ingredients;
+    const ingredient = ingredients[index];
+    ingredient[key] = value;
     this.setState({
-      ingredients,
-      ingredientCount: '',
-      ingredientItem: '',
-      ingredientMeasurement: '',
+      ingredient,
+      ...ingredients
     });
   }
 
@@ -109,7 +106,7 @@ class AddRecipe extends Component {
     const recipes = [{
       title: this.state.recipeTitle,
       type: this.state.recipeType,
-      id: this.state.recipeID,
+      id: this.state.id,
     }];
     const { elements, ingredients } = this.state;
 
@@ -119,13 +116,7 @@ class AddRecipe extends Component {
       ingredients,
     }
 
-    console.log(recipeObject);
-
     this.props.addRecipe(recipeObject);
-    this.setState({
-      title: '',
-      type: '',
-    });
   }
 }
 
