@@ -28,11 +28,6 @@ class Ingredient extends Component {
     return (
       <div className="ingredient-builder">
         <input
-           value={this.state.item}
-           onChange={e => this.onChange(this.props.index, 'item', e.target.value)}
-           placeholder='ingredient'
-        />
-        <input
            value={this.state.count}
            onChange={e => this.onChange(this.props.index, 'count', e.target.value)}
            placeholder='count'
@@ -41,6 +36,11 @@ class Ingredient extends Component {
            value={this.state.measurement}
            onChange={e => this.onChange(this.props.index, 'measurement', e.target.value)}
            placeholder='measurement'
+        />
+        <input
+           value={this.state.item}
+           onChange={e => this.onChange(this.props.index, 'item', e.target.value)}
+           placeholder='ingredient'
         />
       </div>
     )
