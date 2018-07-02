@@ -140,5 +140,6 @@ enum Status {
 
   it('Should have a composeRecipe method to query a specific recipe by ID and returns all rows of the db for that part', () => {
     // because the return of this part isn't a simple object I need to research the mock API
+    graphql(schema, query).then()
   })
 })
