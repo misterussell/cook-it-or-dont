@@ -24,10 +24,6 @@ class AddRecipe extends Component {
    this.updateIngredient = this.updateIngredient.bind(this);
   }
 
-  componentWillMount() {
-    this.props.store.recipe.newRecipe();
-  }
-
   render() {
    return (
     <div>
@@ -92,7 +88,6 @@ class AddRecipe extends Component {
   }
 
   updateIngredient(index, key, value) {
-    console.log('BING');
     const ingredients = this.state.ingredients;
     const ingredient = ingredients[index];
     ingredient[key] = value;
@@ -103,13 +98,17 @@ class AddRecipe extends Component {
   }
 
   addRecipe() {
+    // need to convert this to the new schema
+    // info {}
+    // elements []
+    // ingredients []
+    // response payload will continue to comeback as null, but the data is getting added to the backend
     const recipes = [{
       title: this.state.recipeTitle,
       type: this.state.recipeType,
       id: this.state.id,
     }];
     const { elements, ingredients } = this.state;
-
     const recipeObject = {
       recipes,
       elements,
@@ -124,6 +123,7 @@ export default compose(
   graphql(AddRecipeGQL, {
     props: props => ({
       addRecipe: (recipeData) => props.mutate({
+        // payload changes go here
         variables: {
           recipes: recipeData.recipes,
           elements: recipeData.elements,
