@@ -2,6 +2,8 @@ import Recipe from '../../../models/Recipe';
 
 describe('The recipe model should be a set of functions, such that:', () => {
 
+  let recipe;
+
   beforeEach(() => {
     recipe = new Recipe();
   });
