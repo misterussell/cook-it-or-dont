@@ -89,14 +89,8 @@ class AddRecipe extends Component {
     this.setState({ ingredients })
   }
 
-  updateIngredient(index, key, value) {
-    const ingredients = this.state.ingredients;
-    const ingredient = ingredients[index];
-    ingredient[key] = value;
-    this.setState({
-      ingredient,
-      ...ingredients
-    });
+  updateIngredient(ingredients) {
+    this.setState({ingredients});
   }
 
   addRecipe() {

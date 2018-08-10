@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import uuidV4 from 'uuid/v4';
 import PropTypes from 'prop-types';
 
-class Ingredient extends Component {
+class IngredientList extends Component {
   static propTypes = {
     elementID: PropTypes.string.isRequired,
     updateIngredient: PropTypes.func.isRequired,
@@ -17,10 +17,6 @@ class Ingredient extends Component {
     }
   }
 
-  componentWillMount() {
-
-  }
-
   render() {
     return (
       <textarea className="ingredient-list"
@@ -32,18 +28,19 @@ class Ingredient extends Component {
   }
 
   onChange(key, value) {
-    let ingredientsArr = value.split('\n')
-    let test = ingredientsArr.map((ingredient, i) => {
+    let ingredientsArr = value.split('\n').map((ingredient, i) => {
       return {
         ingredient,
-        id: uuidV4(),
+        ingredientID: uuidV4(),
+        elementID: this.props.elementID,
       }
     });
     this.setState({
       [key]: value,
       ingredientsArr,
     });
+    this.props.updateIngredient(ingredientsArr);
   }
 }
 
-export default Ingredient;
+export default IngredientList;

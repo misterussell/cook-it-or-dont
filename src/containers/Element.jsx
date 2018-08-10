@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import uuidV4 from 'uuid/v4';
 import PropTypes from 'prop-types';
 
-import { Ingredient } from './';
+import { IngredientList } from './';
 
 class Element extends Component {
   static propTypes = {
@@ -23,11 +23,6 @@ class Element extends Component {
 
   }
 
-  componentWillMount() {
-    this.props.updateElement(this.props.index, 'id', this.state.id);
-    this.props.updateElement(this.props.index, 'recipeID', this.props.recipeID);
-  }
-
   render() {
     return (
       <div className="element-builder">
@@ -41,7 +36,7 @@ class Element extends Component {
         {
           this.state.ingredients.map((ingredient, i) => {
             return (
-              <Ingredient
+              <IngredientList
                 key={i}
                 index={i}
                 updateIngredient={this.props.updateIngredient}
@@ -60,9 +55,4 @@ class Element extends Component {
   }
 }
 
-// <Ingredient
-//   key={i}
-//   index={i}
-//   updateIngredient={this.props.updateIngredient}
-// />
 export default Element;

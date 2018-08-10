@@ -8,4 +8,4 @@ export { default as MyRecipes } from './MyRecipes';
 export { default as Recipes } from './Recipes';
 export { default as AddRecipe } from './AddRecipe';
 export { default as Element } from './Element';
-export { default as Ingredient } from './Ingredient';
+export { default as IngredientList } from './IngredientList';
