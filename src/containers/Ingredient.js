@@ -12,30 +12,37 @@ class Ingredient extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: uuidV4(),
       ingredients: '',
+      ingredientsArr: [],
     }
   }
 
   componentWillMount() {
-    this.props.updateIngredient(this.props.index, 'id', this.state.id);
-    this.props.updateIngredient(this.props.index, 'elementID', this.props.elementID);
+
   }
 
   render() {
     return (
       <textarea className="ingredient-list"
         value={this.state.ingredients}
-        onChange={e => this.onChange(this.props.index, "ingredients", e.target.value)}
+        onChange={e => this.onChange("ingredients", e.target.value)}
         placeholder="list of ingredients"
       />
     )
   }
 
-  onChange(index, key, value) {
-    this.setState({[key]: value});
-    let ingredientArr = this.state.ingredients.split('\n');
-    this.props.updateIngredient(index, key, ingredientArr);
+  onChange(key, value) {
+    let ingredientsArr = value.split('\n')
+    let test = ingredientsArr.map((ingredient, i) => {
+      return {
+        ingredient,
+        id: uuidV4(),
+      }
+    });
+    this.setState({
+      [key]: value,
+      ingredientsArr,
+    });
   }
 }
 
