@@ -22,6 +22,7 @@ I'd like to attempt to do my part to solve this a bit. I'd like to learn a bit w
 - A place to share recipes.
 - A tool that can be used while cooking, i.e. a decent plaintext view.
 - Computative measurements (don't require the user to translate everything)
+- Standardized input and recipe viewing
 
 ## MVP
 - User can upload a recipe
