@@ -21,7 +21,6 @@ class Element extends Component {
       ingredients: [{}],
     }
 
-    this.addIngredient = this.addIngredient.bind(this);
   }
 
   componentWillMount() {
@@ -32,10 +31,12 @@ class Element extends Component {
   render() {
     return (
       <div className="element-builder">
+        <span className="element-index">{this.props.index}</span>
         <input
-           value={this.state.name}
-           onChange={e => this.onChange(this.props.index, 'name', e.target.value)}
-           placeholder='element'
+          className="text-input"
+          value={this.state.name}
+          onChange={e => this.onChange(this.props.index, 'name', e.target.value)}
+          placeholder='element'
         />
         {
           this.state.ingredients.map((ingredient, i) => {
@@ -49,7 +50,6 @@ class Element extends Component {
             )
           })
         }
-        <button onClick={this.addIngredient}>add ingredient</button>
       </div>
     )
   }
@@ -57,12 +57,6 @@ class Element extends Component {
   onChange(index, key, value) {
     this.setState({[key]: value});
     this.props.updateElement(index, key, value);
-  }
-
-  addIngredient() {
-    const ingredients = [{}, ...this.state.ingredients];
-    this.setState({ ingredients });
-    this.props.addIngredient();
   }
 }
 

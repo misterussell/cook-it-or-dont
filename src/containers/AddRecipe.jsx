@@ -27,19 +27,21 @@ class AddRecipe extends Component {
   render() {
    return (
     <div>
-      <h2>Create Recipe</h2>
+      <h2 className="section-header">Create Recipe</h2>
       <input
+        className="title-input"
         value={this.state.recipeTitle}
         onChange={e => this.onChange('recipeTitle', e.target.value)}
         placeholder="recipe title"
       />
       <input
+        className="type-input"
         value={this.state.recipeType}
         onChange={e => this.onChange('recipeType', e.target.value)}
         placeholder="recipe type"
       />
       <div>
-        <p>Elements</p>
+        <h3 className="subsection-header">Elements</h3>
           {
             this.state.elements.map((element, i) => {
               return (
@@ -100,8 +102,8 @@ class AddRecipe extends Component {
   addRecipe() {
     // need to convert this to the new schema
     // info {}
-    // elements []
-    // ingredients []
+    // elements [{},{}]
+    // ingredients [{},{}]
     // response payload will continue to comeback as null, but the data is getting added to the backend
     const recipes = [{
       title: this.state.recipeTitle,

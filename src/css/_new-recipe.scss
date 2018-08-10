@@ -1,0 +1,21 @@
+.title-input, .type-input {
+  display: block;
+  margin: 0.5em;
+}
+
+.element-builder {
+
+  .text-input {
+    display: block;
+  }
+
+  .element-index {
+    display: block;
+    float: left;
+  }
+
+  .ingredient-list {
+    display: block;
+    resize: none;
+  }
+}

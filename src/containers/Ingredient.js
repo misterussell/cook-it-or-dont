@@ -13,9 +13,7 @@ class Ingredient extends Component {
     super(props);
     this.state = {
       id: uuidV4(),
-      count: 0,
-      item: '',
-      measurement: '',
+      ingredients: '',
     }
   }
 
@@ -26,29 +24,18 @@ class Ingredient extends Component {
 
   render() {
     return (
-      <div className="ingredient-builder">
-        <input
-           value={this.state.count}
-           onChange={e => this.onChange(this.props.index, 'count', e.target.value)}
-           placeholder='count'
-        />
-        <input
-           value={this.state.measurement}
-           onChange={e => this.onChange(this.props.index, 'measurement', e.target.value)}
-           placeholder='measurement'
-        />
-        <input
-           value={this.state.item}
-           onChange={e => this.onChange(this.props.index, 'item', e.target.value)}
-           placeholder='ingredient'
-        />
-      </div>
+      <textarea className="ingredient-list"
+        value={this.state.ingredients}
+        onChange={e => this.onChange(this.props.index, "ingredients", e.target.value)}
+        placeholder="list of ingredients"
+      />
     )
   }
 
   onChange(index, key, value) {
     this.setState({[key]: value});
-    this.props.updateIngredient(index, key, value);
+    let ingredientArr = this.state.ingredients.split('\n');
+    this.props.updateIngredient(index, key, ingredientArr);
   }
 }
 
